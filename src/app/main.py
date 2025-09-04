@@ -5,13 +5,15 @@ from flask_cors import CORS
 
 from src.app.routers.health import health
 from src.app.routers.static import static
+from src.app.routers.db import db
 
 
 def create_app() -> Flask:
     app = Flask(__name__)
-    CORS(app)  # one place
+    CORS(app)
     app.register_blueprint(health)
     app.register_blueprint(static)
+    app.register_blueprint(db)
     return app
 
 
