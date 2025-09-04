@@ -1,4 +1,4 @@
-from flask import send_file
+from flask import send_file, Response
 import importlib.resources as r
 
 from flask import Blueprint
@@ -8,10 +8,10 @@ static = Blueprint("static", __name__)
 
 
 @static.route("/", methods=["GET"])
-def root():
+def root() -> Response:
     return send_file(str(STATIC_DIR / "index.html"))
 
 
 @static.route("/<page>", methods=["GET"])
-def any_page(page):
+def any_page(page: str) -> Response:
     return send_file(str(STATIC_DIR / page))

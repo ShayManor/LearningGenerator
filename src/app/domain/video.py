@@ -1,5 +1,6 @@
 import uuid
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Optional
 
 
@@ -13,4 +14,4 @@ class Video:
     url: str = ""
     duration: float = 0.0
     views: int = 0
-    created_at: float = 0.0
+    created_at: datetime = datetime.now()

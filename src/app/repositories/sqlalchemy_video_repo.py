@@ -1,16 +1,20 @@
-from typing import Optional, Iterable
+from datetime import datetime
+from typing import Optional, Iterable, Callable
+
+from sqlalchemy.orm import Session  # noqa: F401
+
 from ..domain.video import Video
 from .video_repo import VideoRepo
 from .tables import VideoRow  # SQLAlchemy Table / Declarative model
 
 
 class SqlAlchemyVideoRepo(VideoRepo):
-    def __init__(self, session_factory):
+    def __init__(self, session_factory: Callable[[], Session]) -> None:
         self._session_factory = session_factory
 
     def save(self, v: Video) -> None:
         with self._session_factory() as s:  # type: Session
-            row = s.get(VideoRow, v.id) or VideoRow(id=v.id)
+            row = s.get(Video, v.id) or Video(id=v.id)
             row.title = v.title
             row.summary = v.summary
             row.script = v.script
@@ -23,7 +27,7 @@ class SqlAlchemyVideoRepo(VideoRepo):
 
     def get(self, video_id: str) -> Optional[Video]:
         with self._session_factory() as s:
-            row = s.get(VideoRow, video_id)
+            row = s.get(Video, video_id)
             if not row:
                 return None
             return Video(
@@ -47,14 +51,16 @@ class SqlAlchemyVideoRepo(VideoRepo):
             )
             return [
                 Video(
-                    id=r.id,
-                    title=r.title,
-                    summary=r.summary,
-                    script=r.script,
-                    url=r.url,
-                    duration=r.duration,
-                    views=r.views,
-                    created_at=r.created_at,
+                    id=r.id.as_uuid,
+                    title=str(r.title),
+                    summary=str(r.summary),
+                    script=str(r.script),
+                    url=str(r.url),
+                    duration=float(r.duration),
+                    views=int(r.views),
+                    created_at=datetime(
+                        r.created_at.year, r.created_at.month, r.created_at.day
+                    ),
                 )
                 for r in q.all()
             ]
