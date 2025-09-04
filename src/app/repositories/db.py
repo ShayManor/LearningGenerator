@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, NullPool
 from sqlalchemy.orm import sessionmaker
 import os
 
-DB_URL = "postgresql+psycopg://postgres.yjubgqdctfrimqgeitap:Shay123456@aws-1-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require"
+DB_URL = os.getenv("SUPABASE_DB_URL")
 
 SSLMODE = os.getenv("DB_SSLMODE", "require")
 
