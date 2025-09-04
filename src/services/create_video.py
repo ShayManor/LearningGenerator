@@ -1,7 +1,7 @@
-from dataclasses import dataclass
-from uuid import uuid4
+from dataclasses import replace
 
-from src.models.create_video import BaseVideo
+from src.app.domain.video import Video
+from src.app.repositories.video_repo import VideoRepo
 
 
 #     id: uuid.UUID = uuid4()
@@ -12,30 +12,55 @@ from src.models.create_video import BaseVideo
 #     url: str = ""
 #     duration: float = 0.0
 #     views: int = 0
-@dataclass
-class Video(BaseVideo):
-    def _set_title(self):
-        if not self.prompt:
-            raise RuntimeError("Prompt not set, can't fill title")
-        self.script = ""
 
-    def _set_summary(self):
-        if not self.script:
+
+class CreateVideoService:
+    def __init__(self, repo: VideoRepo, llm: LLMClient, store: Storage):
+        self.repo = repo
+        self.llm = llm
+        self.store = store
+
+    def execute(self, prompt: str) -> Video:
+        if not prompt:
+            raise ValueError("Prompt is required")
+
+        v = Video(prompt=prompt)
+
+        title = self._make_title(v)
+        script = self._make_script(v, title)
+        summary = self._make_summary(v, script)
+
+        url, duration = self._upload_rendered(script)
+
+        v = replace(
+            v,
+            title=title,
+            script=script,
+            summary=summary,
+            url=url,
+            duration=duration,
+            views=0,
+        )
+
+        self.repo.save(v)
+        return v
+
+    def _make_title(self, v):
+        if not v.prompt:
+            raise RuntimeError("Prompt not set, can't fill title")
+        return ""
+
+    def _make_script(self, v, title):
+        if not title:
+            raise RuntimeError("Title not set, can't fill title")
+
+    def _make_summary(self, v, script):
+        if not script:
             raise RuntimeError("Script not set, can't fill title")
 
-    def _set_script(self):
-        if not self.prompt:
-            raise RuntimeError("Prompt not set, can't fill title")
-
-
-    def _upload(self) -> str:
+    def _upload_rendered(self, script) -> (str, float):
         """
-        Uploads video to bucket and sets url, duration
+        Uploads video to bucket and returns url, duration
         :return: url for video
         """
-        pass
-
-    def create_video(self, prompt):
-        self.id = uuid4()
-        self.prompt = prompt
-        self.views = 0
+        return "https://", 0.0

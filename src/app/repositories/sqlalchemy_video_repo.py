@@ -15,7 +15,7 @@ class SqlAlchemyVideoRepo(VideoRepo):
             row.summary = v.summary
             row.script = v.script
             row.url = v.url
-            row.duration_s = v.duration
+            row.duration = v.duration
             row.views = v.views
             row.created_at = v.created_at
             s.add(row)
@@ -32,7 +32,7 @@ class SqlAlchemyVideoRepo(VideoRepo):
                 summary=row.summary,
                 script=row.script,
                 url=row.url,
-                duration=row.duration_s,
+                duration=row.duration,
                 views=row.views,
                 created_at=row.created_at,
             )
@@ -52,7 +52,7 @@ class SqlAlchemyVideoRepo(VideoRepo):
                     summary=r.summary,
                     script=r.script,
                     url=r.url,
-                    duration=r.duration_s,
+                    duration=r.duration,
                     views=r.views,
                     created_at=r.created_at,
                 )

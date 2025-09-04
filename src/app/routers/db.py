@@ -1,3 +1,4 @@
+import sqlalchemy
 from flask import Blueprint
 from sqlalchemy import text
 
@@ -10,9 +11,13 @@ db = Blueprint("db", __name__)
 @db.route("/connect", methods=["GET"])
 def connect():
     video_repo = SqlAlchemyVideoRepo(session_factory)
+    print(video_repo.list())
     try:
         with engine.connect() as c:
-            c.execute(text("SELECT 1"))
+            res: sqlalchemy.engine.cursor.CursorResult = c.execute(
+                text("SELECT COUNT(*) FROM public.videos")
+            )
+            row = res.fetchone()
     except Exception as e:
         return {"error": str(e)}, 500
-    return {"response": "healthy"}, 200
+    return {"response": row[0]}, 200

@@ -6,6 +6,7 @@ from flask_cors import CORS
 from src.app.routers.health import health
 from src.app.routers.static import static
 from src.app.routers.db import db
+from src.app.routers.video import video
 
 
 def create_app() -> Flask:
@@ -14,6 +15,7 @@ def create_app() -> Flask:
     app.register_blueprint(health)
     app.register_blueprint(static)
     app.register_blueprint(db)
+    app.register_blueprint(video)
     return app
 
 
