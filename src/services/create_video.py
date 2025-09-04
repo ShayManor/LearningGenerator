@@ -1,6 +1,7 @@
 from dataclasses import replace
 
 from src.app.domain.video import Video
+from src.app.gateways.llm.llm_client import LLMClient
 from src.app.repositories.video_repo import VideoRepo
 
 
