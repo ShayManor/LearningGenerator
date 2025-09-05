@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from typing import Optional, cast, List
 
-from openai import OpenAI, NOT_GIVEN
+from openai import OpenAI, NOT_GIVEN, NotGiven
 from openai.types.responses import ToolParam
 from openai.types.shared_params.reasoning import Reasoning
 
@@ -61,8 +61,6 @@ class OpenAIClient(LLMClient):
         effort: Optional[str] = None,
         tools: Optional[Tool] = None,
     ) -> str:
-        from openai import NotGiven
-
         reasoning: Reasoning | NotGiven = (
             cast(Reasoning, {"effort": effort})  # effort is not None here
             if effort is not None
