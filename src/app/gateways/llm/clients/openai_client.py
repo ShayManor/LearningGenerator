@@ -1,4 +1,6 @@
+import json
 import os
+from pathlib import Path
 from typing import Optional, cast, List
 
 from openai import OpenAI, NOT_GIVEN
@@ -43,6 +45,13 @@ class OpenAIClient(LLMClient):
         if not api_key:
             raise ValueError("No OPENAI_API_KEY set.")
         self.client = OpenAI(api_key=api_key)
+        self.system_prompts: dict = {}
+        system_path = Path(__file__).resolve().parent.parent
+        with open(system_path / "prompts.json", "r") as f:
+            self.system_prompts = json.load(f)
+
+    def clean_result(self, prompt: str) -> str:
+        return prompt
 
     def call_llm(
         self,
@@ -59,10 +68,11 @@ class OpenAIClient(LLMClient):
             if effort is not None
             else NOT_GIVEN
         )
-
+        print(self.system_prompts[system])
         response = self.client.responses.create(
             input=prompt,
             model=model,
+            instructions=self.system_prompts[system],
             reasoning=reasoning,
             tools=get_tools(tools) if tools else NOT_GIVEN,
         )

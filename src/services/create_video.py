@@ -41,6 +41,7 @@ class CreateVideoService:
     def _make_title(self, v: Video) -> str:
         if not v.prompt:
             raise RuntimeError("Prompt not set, can't fill title")
+        self.llm.call_llm(prompt="", model="", system="create_video_title")
         return "Example Title"
 
     def _make_script(self, v: Video, title: str) -> str:
