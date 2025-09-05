@@ -1,13 +1,12 @@
 import uuid
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
 
 
 @dataclass
 class Video:
     id: uuid.UUID = uuid.uuid4()
-    prompt: Optional[str] = None
+    prompt: str = ""
     title: str = ""
     summary: str = ""
     script: str = ""

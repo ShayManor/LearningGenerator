@@ -7,16 +7,6 @@ from src.app.gateways.storage.storage import Storage
 from src.app.repositories.video_repo import VideoRepo
 
 
-#     id: uuid.UUID = uuid4()
-#     prompt: Optional[str] = None
-#     title: str = ""
-#     summary: str = ""
-#     script: str = ""
-#     url: str = ""
-#     duration: float = 0.0
-#     views: int = 0
-
-
 class CreateVideoService:
     def __init__(self, repo: VideoRepo, llm: LLMClient, store: Storage):
         self.repo = repo
@@ -51,21 +41,21 @@ class CreateVideoService:
     def _make_title(self, v: Video) -> str:
         if not v.prompt:
             raise RuntimeError("Prompt not set, can't fill title")
-        return ""
+        return "Example Title"
 
     def _make_script(self, v: Video, title: str) -> str:
         if not title:
             raise RuntimeError("Title not set, can't fill title")
-        return ""
+        return "Example"
 
     def _make_summary(self, v: Video, script: str) -> str:
         if not script:
             raise RuntimeError("Script not set, can't fill title")
-        return ""
+        return "Example"
 
     def _upload_rendered(self, script: str) -> Tuple[str, float]:
         """
         Uploads video to bucket and returns url, duration
         :return: url for video
         """
-        return "https://", 0.0
+        return "https://", 1.1

@@ -14,31 +14,32 @@ class SqlAlchemyVideoRepo(VideoRepo):
 
     def save(self, v: Video) -> None:
         with self._session_factory() as s:  # type: Session
-            row = s.get(Video, v.id) or Video(id=v.id)
-            row.title = v.title
-            row.summary = v.summary
-            row.script = v.script
-            row.url = v.url
-            row.duration = v.duration
-            row.views = v.views
-            row.created_at = v.created_at
+            row = s.get(VideoRow, v.id) or VideoRow(id=v.id)
+            row.title = v.title  # type: ignore
+            row.prompt = v.prompt  # type: ignore
+            row.summary = v.summary  # type: ignore
+            row.script = v.script  # type: ignore
+            row.url = v.url  # type: ignore
+            row.duration = v.duration  # type: ignore
+            row.views = v.views  # type: ignore
+            row.created_at = v.created_at  # type: ignore
             s.add(row)
             s.commit()
 
     def get(self, video_id: str) -> Optional[Video]:
         with self._session_factory() as s:
-            row = s.get(Video, video_id)
+            row = s.get(VideoRow, video_id)
             if not row:
                 return None
             return Video(
-                id=row.id,
-                title=row.title,
-                summary=row.summary,
-                script=row.script,
-                url=row.url,
-                duration=row.duration,
-                views=row.views,
-                created_at=row.created_at,
+                id=row.id,  # type: ignore
+                title=row.title,  # type: ignore
+                summary=row.summary,  # type: ignore
+                script=row.script,  # type: ignore
+                url=row.url,  # type: ignore
+                duration=row.duration,  # type: ignore
+                views=row.views,  # type: ignore
+                created_at=row.created_at,  # type: ignore
             )
 
     def list(self, limit: int = 50, offset: int = 0) -> Iterable[Video]:

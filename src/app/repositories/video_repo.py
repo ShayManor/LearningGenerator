@@ -22,7 +22,7 @@ class InMemoryVideoRepo(Video):
 
     def list(self, limit: int = 50, offset: int = 0) -> List[Video]:
         values = list(self._store.values())
-        return values[offset : offset + limit]
+        return values[offset: offset + limit]
 
     def delete(self, video_id: str) -> None:
         self._store.pop(video_id, None)
