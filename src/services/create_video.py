@@ -20,7 +20,8 @@ class CreateVideoService:
         v = Video(prompt=prompt)
 
         title = self._make_title(v)
-        script = self._make_script(v, title)
+        desc = self._make_description(v, title)
+        script = self._make_script(v, title, desc)
         summary = self._make_summary(v, script)
 
         url, duration = self._upload_rendered(script)
@@ -31,6 +32,7 @@ class CreateVideoService:
             script=script,
             summary=summary,
             url=url,
+            description=desc,
             duration=duration,
             views=0,
         )
@@ -41,12 +43,27 @@ class CreateVideoService:
     def _make_title(self, v: Video) -> str:
         if not v.prompt:
             raise RuntimeError("Prompt not set, can't fill title")
-        self.llm.call_llm(prompt="", model="", system="create_video_title")
-        return "Example Title"
+        title = self.llm.call_llm(
+            prompt=v.prompt, model="gpt-5-mini", system="create_video_title"
+        )
+        return title
 
-    def _make_script(self, v: Video, title: str) -> str:
+    def _make_description(self, v: Video, title: str) -> str:
+        if not v.prompt:
+            raise RuntimeError("Prompt not set, can't fill description")
+        desc = self.llm.call_llm(
+            prompt=f"Prompt: {v.prompt}\n\nTitle: {title}",
+            model="gpt-5-mini",
+            system="create_video_desc",
+        )
+        print(desc)
+        return desc
+
+    def _make_script(self, v: Video, title: str, desc: str) -> str:
         if not title:
             raise RuntimeError("Title not set, can't fill title")
+        if not desc:
+            raise RuntimeError("Description not set, can't fill title")
         return "Example"
 
     def _make_summary(self, v: Video, script: str) -> str:

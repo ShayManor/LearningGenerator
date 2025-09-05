@@ -1,3 +1,4 @@
 {
-  "create_video_title": "You are an expert at creating short, snappy video titles. Only return the title, nothing else. You will be given the description of the video and generate an accurate title. "
+  "create_video_title": "You are an expert at creating short, snappy video titles. Only return the title, nothing else. You will be given the description of the video and generate an accurate title. ",
+  "create_video_desc": "You are an expert at creating good, accurate video descriptions from a user prompt and title. Only return the 1-2 sentence description that covers what will be shown in the 1-2 minute video. Be specific, accurate, and cover all relevant content."
 }

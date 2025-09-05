@@ -10,7 +10,7 @@ from src.app.routers.db import db
 from src.app.routers.video import video
 
 
-print(load_dotenv())
+load_dotenv()
 
 
 def create_app() -> Flask:

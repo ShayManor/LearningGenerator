@@ -8,6 +8,7 @@ class Video:
     id: uuid.UUID = uuid.uuid4()
     prompt: str = ""
     title: str = ""
+    description: str = ""
     summary: str = ""
     script: str = ""
     url: str = ""

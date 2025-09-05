@@ -17,6 +17,7 @@ class SqlAlchemyVideoRepo(VideoRepo):
             row = s.get(VideoRow, v.id) or VideoRow(id=v.id)
             row.title = v.title  # type: ignore
             row.prompt = v.prompt  # type: ignore
+            row.description = v.description  # type: ignore
             row.summary = v.summary  # type: ignore
             row.script = v.script  # type: ignore
             row.url = v.url  # type: ignore
@@ -38,6 +39,7 @@ class SqlAlchemyVideoRepo(VideoRepo):
                 script=row.script,  # type: ignore
                 url=row.url,  # type: ignore
                 duration=row.duration,  # type: ignore
+                description=row.description,  # type: ignore
                 views=row.views,  # type: ignore
                 created_at=row.created_at,  # type: ignore
             )
@@ -55,6 +57,7 @@ class SqlAlchemyVideoRepo(VideoRepo):
                     id=r.id.as_uuid,
                     title=str(r.title),
                     summary=str(r.summary),
+                    description=str(r.description),
                     script=str(r.script),
                     url=str(r.url),
                     duration=float(r.duration),

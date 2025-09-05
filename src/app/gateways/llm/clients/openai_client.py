@@ -68,7 +68,6 @@ class OpenAIClient(LLMClient):
             if effort is not None
             else NOT_GIVEN
         )
-        print(self.system_prompts[system])
         response = self.client.responses.create(
             input=prompt,
             model=model,

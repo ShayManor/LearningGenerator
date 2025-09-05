@@ -14,6 +14,7 @@ class VideoRow(Base):
     title = Column(String, nullable=False)
     summary = Column(String, nullable=True)
     script = Column(String, nullable=True)
+    description = Column(String, nullable=True)
     url = Column(String, nullable=True)
     duration = Column(Float, nullable=True)
     prompt = Column(String, nullable=True)
